@@ -6,8 +6,6 @@
 
 package services;
 
-import static com.sun.org.apache.bcel.internal.Repository.instanceOf;
-import static com.sun.org.apache.bcel.internal.Repository.instanceOf;
 import entities.ProductList;
 import entities.Products;
 import java.io.StringReader;
@@ -30,8 +28,9 @@ import javax.json.JsonObject;
  */
 @MessageDriven (mappedName = "jms/Queue")
 public class ProductListener implements MessageListener{
+    
     @EJB
-    ProductList products;
+    ProductList p;
     
     @Override
     public void onMessage(Message msg){
@@ -40,7 +39,7 @@ public class ProductListener implements MessageListener{
             String jsonString = ((TextMessage) msg).getText();
             JsonObject json = Json.createReader(
                         new StringReader(jsonString)).readObject();
-                        products.add(new Products(json));
+                        p.add(new Products(json));
         }
         }
         catch (JMSException ex) {

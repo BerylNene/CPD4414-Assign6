@@ -30,7 +30,6 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(services.ProductREST.class);
-        resources.add(servlet.ProductServlet.class);
     }
     
 }

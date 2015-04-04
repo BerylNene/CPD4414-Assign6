@@ -34,10 +34,10 @@ public class ProductList {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
                 Products p = new Products (
-                rs.getInt("ProductId"),
-                rs.getString("Name"),
-                rs.getString("Description"),
-                rs.getInt("Quantity"));
+                rs.getInt("productID"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getInt("quantity"));
                 productList.add(p);
             }
             }
@@ -48,16 +48,16 @@ public class ProductList {
     
     public JsonArray toJSON(){
         JsonArrayBuilder json = Json.createArrayBuilder();
-        for (Products p : productList)
+        for (Products p : productList){
             json.add(p.toJSON());
+        }
         return json.build();
     }
     
-    public Products get(int productId){
+    public Products get(int productID){
         Products result = null;
-        for (int i = 0; i < productList.size() && result == null; i++){
-        Products p = productList.get(i);
-            if (p.getProductId() == productId){
+       for(Products p : productList){
+            if (p.getProductID() == productID){
                 result = p;
             }
         }          
@@ -65,42 +65,53 @@ public class ProductList {
     }
     
     public void add(Products p) throws Exception {
-        int result = doUpdate("INSERT INTO Products (ProductID, Name, Description, Quantity",
-        String.valueOf(p.getProductId()),
+        int result = doUpdate("INSERT INTO products (productID, name, description, quantity",
+        String.valueOf(p.getProductID()),
         p.getName(),
         p.getDescription(),
         String.valueOf(p.getQuantity()));
         if (result > 0){
             productList.add(p);
         }
-        else throw new Exception("Error Insertion");
+        else {
+            throw new Exception("Insertion Failed");
     }
+}
     
    public void remove(Products p) throws Exception{
-       remove(p.getProductId());
+       remove(p.getProductID());
   }
     
-    public void remove (int productId){
-        int result = doUpdate("DELETE FROM Products WHERE ProductID = ?",
-                String.valueOf(productId));
+    public void remove (int productID) throws Exception{
+        int result = doUpdate("DELETE FROM products WHERE ProductID = ?",
+                String.valueOf(productID));
         if (result > 0){
-            Products original = get(productId);
+            Products original = get(productID);
             productList.remove(original); 
         }
+          else {
+            throw new Exception("Deletion Failed");
+    }
     }
     
-    public void Set(int productId, Products products){
-        int result = doUpdate("UPDATE Products SET Name = ?, Description = ?, Quantity = ?",
+    public void Set(int productID, Products products) throws Exception{
+        int result = doUpdate("UPDATE products SET name = ?, description = ?, quantity = ?",
               products.getName(),
                 products.getDescription(),
                 String.valueOf(products.getQuantity()),
-                String.valueOf(productId)
+                String.valueOf(productID)
                         );
-                
-        Products original = get(productId);
+        
+        if(result>0){        
+        Products original = get(productID);
         original.setName(products.getName());
         original.setDescription(products.getDescription());
         original.setQuantity(products.getQuantity());
+    }
+        else
+        {
+                throw new Exception("Update Failed");
+                }
     }
     
     private Connection getConnection() {
@@ -118,6 +129,7 @@ public class ProductList {
         return conn;
     }
     
+    
     private String getResults(String query, String... params){
         StringBuilder sb =new StringBuilder();
         try(Connection conn = getConnection()){
@@ -126,9 +138,10 @@ public class ProductList {
                 pstmt.setString(i, params[i - 1]);
             }
            ResultSet rs = pstmt.executeQuery();
+           
            while (rs.next()){
                sb.append(String.format("%s\t%s\t%s\n",
-                       rs.getInt("id"),
+                       rs.getInt("productID"),
                        rs.getString("name"), 
                        rs.getString("description"), 
                        rs.getInt("quantity")));
@@ -139,6 +152,8 @@ public class ProductList {
                    }
            return sb.toString();
         }
+    
+    
     private int doUpdate(String query, String... params) {
         int numChanges = 0;
         try (Connection conn = getConnection()){
