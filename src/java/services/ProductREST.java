@@ -43,7 +43,7 @@ public class ProductREST {
     @Path("{id}")
     @Produces("application/json")
     public Response getById(@PathParam("id") int id) {
-        return Response.ok(productList.toJSON()).build();
+        return Response.ok(productList.get(id).toJSON()).build();
     }
 
     @POST
@@ -52,7 +52,7 @@ public class ProductREST {
         Response response;
         try {
             productList.add(new Products(json));
-            response = Response.ok().build();
+            response = Response.ok(productList.get(json.getInt("productID")).toJSON()).build();
         } catch (Exception ex) {
             response = Response.status(500).build();
         }
@@ -66,7 +66,7 @@ public class ProductREST {
         try {
             Products p = new Products(json);
             productList.Set(id, p);
-            return Response.ok().build();
+            return Response.ok(productList.get(id).toJSON()).build();
         } catch (Exception ex) {
             return Response.status(500).build();
         }
