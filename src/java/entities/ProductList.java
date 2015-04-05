@@ -153,7 +153,6 @@ public class ProductList {
            return sb.toString();
         }
     
-    
     private int doUpdate(String query, String... params) {
         int numChanges = 0;
         try (Connection conn = getConnection()){

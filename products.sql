@@ -29,6 +29,7 @@ USE `beryl_products`;
 --
 
 CREATE TABLE IF NOT EXISTS `products` (
+<<<<<<< HEAD
   `productID` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) NOT NULL,
@@ -41,6 +42,20 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 
 INSERT INTO `products` (`productID`, `name`, `description`, `quantity`) VALUES
+=======
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  `quantity` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `description`, `quantity`) VALUES
+>>>>>>> origin/master
 (1, 'lorem', 'lorem ipsum', 4),
 (2, 'dolor', 'dolor sit', 12),
 (3, 'hi', 'bye', 3),

@@ -15,6 +15,7 @@ import javax.json.JsonObject;
  * @author c0641046
  */
 public class Products {
+
     private int productID;
     private String name;
     private String description;

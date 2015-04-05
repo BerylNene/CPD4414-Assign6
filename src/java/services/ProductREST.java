@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package services;
 
 import entities.ProductList;
@@ -25,69 +24,64 @@ import javax.ws.rs.core.Response;
  *
  * @author c0641046
  */
+
+
 @Path("/products")
 @RequestScoped
 public class ProductREST {
+
     @Inject
     ProductList productList;
-    
-    
+
     @GET
-    @Produces ("application/json")
-    public Response getAll(){
-        return Response.ok(productList.toJSON()).build(); 
+    @Produces("application/json")
+    public Response getAll() {
+        return Response.ok(productList.toJSON()).build();
     }
-    
 
     @GET
     @Path("{id}")
-    @Produces ("application/json")
-    public Response getById(@PathParam("id") int id){
+    @Produces("application/json")
+    public Response getById(@PathParam("id") int id) {
         return Response.ok(productList.toJSON()).build();
     }
-    
+
     @POST
     @Consumes("application/json")
-    public Response add(JsonObject json){
-         Response response;
+    public Response add(JsonObject json) {
+        Response response;
         try {
-            productList.add(new Products (json));
+            productList.add(new Products(json));
             response = Response.ok().build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response = Response.status(500).build();
         }
         return response;
     }
-    
+
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public Response set (@PathParam("id") int id, JsonObject json){
-       try {
-        Products p = new Products(json);
-        productList.Set(id, p);
-        return Response.ok().build();
+    public Response set(@PathParam("id") int id, JsonObject json) {
+        try {
+            Products p = new Products(json);
+            productList.Set(id, p);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(500).build();
+        }
     }
-    catch (Exception ex) {
-    return Response.status(500).build();
-    }
-}
-    
 
-     @DELETE
+    @DELETE
     @Path("{id}")
     @Consumes("application/json")
-    public Response delete(@PathParam("id") int id){
+    public Response delete(@PathParam("id") int id) {
         try {
             productList.remove(id);
             return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(500).build();
         }
-        catch (Exception ex) {
-            return Response.status(500).build(); 
-        }    
-}
+    }
 
-    
-    
 }
