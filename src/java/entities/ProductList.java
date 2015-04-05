@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ public class ProductList {
     private List <Products> productList;
     
     public ProductList(){
+        productList=new ArrayList<>();
         try (Connection conn = getConnection()){
             String query = "SELECT * FROM products";
             PreparedStatement pstmt = conn.prepareStatement(query);
