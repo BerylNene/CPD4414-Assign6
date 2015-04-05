@@ -52,7 +52,9 @@ public class ProductREST {
         Response response;
         try {
             productList.add(new Products(json));
-            response = Response.ok(productList.get(json.getInt("productID")).toJSON()).build();
+            response = Response.ok(productList.get(json.getInt("productID"))
+                    .toJSON())
+                    .build();
         } catch (Exception ex) {
             response = Response.status(500).build();
         }
@@ -78,7 +80,7 @@ public class ProductREST {
     public Response delete(@PathParam("id") int id) {
         try {
             productList.remove(id);
-            return Response.ok().build();
+            return Response.ok("Delete Successful").build();
         } catch (Exception ex) {
             return Response.status(500).build();
         }
